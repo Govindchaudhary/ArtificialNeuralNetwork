@@ -49,7 +49,8 @@ classifier = Sequential()  # we are defining our neural network model as a class
 #adding the input layer and the 1st hidden layer
 #output_dim is the no. of node in layer
 #totally based on practice but we can take it as avg of no.of node in input and output layer
-#activation is the activation func to be used
+#init='uniform' is to initialize the weights according to uniform distribution and also choose the values close to 0
+# relu is the activation func to be used (rectifier output funcie. f(x) = max(x,0)
 #for the ist hidden layer we have to specify input_dim ie. from where to expect 
 #the input in this case from 11 input nodes
 
