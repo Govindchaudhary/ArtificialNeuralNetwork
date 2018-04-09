@@ -122,6 +122,37 @@ thus we evaluate the accuracy of our model as average of these 10 accuracies.
 
 '''
 
+#here we implemnted our model with keras and k-fold cross validation function belongs to scikit-learn
+#therefore we need to somehow connect these two together
+#and there is a perfect module belonging to keras for this
+#it is a keras wrapper that will wrap the k-fold cross validation by sckit-learn into keras model
+#in other words with the help of this we can use k-fold cross validation in our keras model
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
+
+#now we have to make a func which builds the architecture of our ANN bcos KerasClassifier expects its first argument a func which return the classifier with all the architecture of ANN
+
+def build_classifier():
+    classifier = Sequential() 
+    classifier.add(Dense(output_dim=6,init='uniform',activation='relu',input_dim=11))
+    classifier.add(Dense(output_dim=6,init='uniform',activation='relu'))
+    classifier.add(Dense(output_dim=1,init='uniform',activation='sigmoid'))
+    classifier.compile(optimizer='adam' , loss='binary_crossentropy' ,metrics=['accuracy'])
+    return classifier
+
+
+#this classifier is same as the one we make above but the diff is that we will not
+#train it to whole training set but rather we use k-fold cross validation for training
+#this is basically wrapping our classifier to kerasclassifier to use the k-fold cross validation
+    
+classifier = KerasClassifier(build_fn = build_classifier,batch_size=10,nb_epoch=100)
+#now lets apply k-fold cross validation uisng cross_val_score
+#contain all the 10 accuracies return by k-fold technique
+# here estimator is The object to use to fit the data , cv is the number of fold and n_jobs=-1 indicates that we want to use all the cores of our cpu for this
+accuracies = cross_val_score(estimator=classifier,X=X_train,y=y_train,cv=10,n_jobs=-1)
+accuracies.mean()
+accuracies.std()
+
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
