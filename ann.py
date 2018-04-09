@@ -104,6 +104,24 @@ y_pred = (y_pred>.5) #true if y_pred > .5 otherwise false basically choosing thr
 new_prediction = classifier.predict(sc.transform(np.array([[0,0,600,1,40,3,60000,2,1,1,50000]])))
 new_prediction = (new_prediction>.5)
 
+'''
+we need to optimize a way to evaluate our model performance
+bcos what we did so far is we splitted our datset into training set and test set
+and then we train our data on training set and test it on test set that's
+the correct way of evaluating the model performance but not the best way
+bcos we actually have the variance problem and this can be explain by saying that
+if we evaluate our model then it can give a certain accuracy and then if we again 
+test it on another test set we might get a very different result.
+so judging our model performance only on one accuracy on one test set is not
+super relevant.
+so there is a technique called k-fold cross validation that improves it a lot.
+it will fix the variance problem and it does it by splitting our training set 
+into k folds(generally k=10) and now training our model on 9 folds and test the 
+result on remaining fold .Thus we have 10 diff. combn of 9 training fold and 1 test fold
+thus we evaluate the accuracy of our model as average of these 10 accuracies.
+
+'''
+
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix
 cm = confusion_matrix(y_test, y_pred)
