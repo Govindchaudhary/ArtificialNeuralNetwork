@@ -40,13 +40,14 @@ X_test = sc.transform(X_test)
 import keras
 from keras.models import Sequential  #to initialize the ANN
 from keras.layers import Dense     # to create layers in ANN
+from keras.layers import Dropout
 
 #initializing the ANN (2 methods defining the sequence of layers or defining a graph)
 # we will go with the defining the sequence of layers
 
 classifier = Sequential()  # we are defining our neural network model as a classifier
 
-#adding the input layer and the 1st hidden layer
+#adding the input layer and the 1st hidden layer with dropout
 #output_dim is the no. of node in layer
 #totally based on practice but we can take it as avg of no.of node in input and output layer
 #init='uniform' is to initialize the weights according to uniform distribution and also choose the values close to 0
@@ -55,9 +56,12 @@ classifier = Sequential()  # we are defining our neural network model as a class
 #the input in this case from 11 input nodes
 
 classifier.add(Dense(output_dim=6,init='uniform',activation='relu',input_dim=11))
+classifier.add(Dropout(p=.1)) #here p stands for the fraction of neurons we want to rop or disable at each iteration
+
 
 #adding the second hidden layer
 classifier.add(Dense(output_dim=6,init='uniform',activation='relu'))
+classifier.add(Dropout(p=.1))
 
 #adding the output layer
 classifier.add(Dense(output_dim=1,init='uniform',activation='sigmoid'))
@@ -152,6 +156,22 @@ classifier = KerasClassifier(build_fn = build_classifier,batch_size=10,nb_epoch=
 accuracies = cross_val_score(estimator=classifier,X=X_train,y=y_train,cv=10,n_jobs=-1)
 accuracies.mean()
 accuracies.std()
+
+#improving the ANN 
+#using the dropout regularization to reduce the overfitting if needed
+'''
+The term “dropout” refers to dropping out neurons in a neural network
+at each iteration of the training some neurons of the ANN are randomly disabled
+to prevent them from being too dependent on each other,when they learned the coreltion.
+Therfore by overriding these neurons, our ANN learn several independent corealtions of data
+bcos each time there is different config of neurons and this makes our neurons work more independently
+and thus prevents the neurons from learning too much.
+
+thus we can conclude that:
+    Dropout is an approach to regularization in neural networks 
+    which helps reducing interdependent learning amongst the neurons.
+now we need to apply the dropout to the layers it can be the one layer or multiple
+'''   
 
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix
