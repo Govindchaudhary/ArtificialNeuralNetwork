@@ -53,9 +53,9 @@ classifier = Sequential()  # we are defining our neural network model as a class
 #init='uniform' is to initialize the weights according to uniform distribution and also choose the values close to 0
 # relu is the activation func to be used (rectifier output funcie. f(x) = max(x,0)
 #for the ist hidden layer we have to specify input_dim ie. from where to expect 
-#the input in this case from 11 input nodes
+#the input in this case from 11 input nodesto make the
 
-classifier.add(Dense(output_dim=6,init='uniform',activation='relu',input_dim=11))
+classifier.add(Dense(output_dim=6,init='uniform',activation='relu',input_dim=11))#Dense function is used to make the layer
 classifier.add(Dropout(p=.1)) #here p stands for the fraction of neurons we want to rop or disable at each iteration
 
 
